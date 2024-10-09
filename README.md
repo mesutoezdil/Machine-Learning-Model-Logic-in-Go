@@ -58,13 +58,13 @@ type Prediction struct {
 
 func trainModel() {
     fmt.Println("Model is being trained...")
-    time.Sleep(2 * time.Second) // Simulate training time
+    time.Sleep(2 * time.Second) 
     fmt.Println("Model trained and ready!")
 }
 
 func predict(inputData []float64) int {
     rand.Seed(time.Now().UnixNano())
-    return rand.Intn(3) // Random prediction (0, 1, or 2)
+    return rand.Intn(3) 
 }
 
 func predictHandler(w http.ResponseWriter, r *http.Request) {
@@ -93,26 +93,13 @@ func main() {
 We created a `Dockerfile` to package the Go application and its dependencies into a Docker container. This makes the application portable and ensures consistent execution across different environments.
 
 ```dockerfile
-# Use Go base image
 FROM golang:1.22-alpine
-
-# Set the working directory in the container
 WORKDIR /app
-
-# Copy Go module files and the application code
 COPY go.mod .
 COPY . .
-
-# Download dependencies
 RUN go mod download
-
-# Build the Go application
 RUN go build -o model-app .
-
-# Expose port 8080 for the HTTP API
 EXPOSE 8080
-
-# Run the Go binary when the container starts
 CMD ["/app/model-app"]
 ```
 
